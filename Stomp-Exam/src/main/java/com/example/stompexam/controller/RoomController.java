@@ -3,6 +3,7 @@ package com.example.stompexam.controller;
 import com.example.stompexam.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,31 +26,30 @@ public class RoomController {
 
     //채팅방 목록 조회
     @GetMapping(value = "/rooms")
-    public ModelAndView rooms(){
+    public ResponseEntity<String> rooms(){
 
         log.info("# All Chat Rooms");
-        ModelAndView mv = new ModelAndView("chat/rooms");
+        log.info("{}",repository.findAllRooms().toString());
 
-        mv.addObject("list", repository.findAllRooms());
-
-        return mv;
+        return ResponseEntity.ok(repository.findAllRooms().toString());
     }
 
     //채팅방 개설
     @PostMapping(value = "/room")
-    public String create(@RequestParam String name, RedirectAttributes rttr){
+    public ResponseEntity<String> create(@RequestParam String name){
 
         log.info("# Create Chat Room , name: " + name);
-        rttr.addFlashAttribute("roomName", repository.createChatRoomDTO(name));
-        return "redirect:/chat/rooms";
+         repository.createChatRoomDTO(name);
+        return ResponseEntity.ok("success");
     }
 
     //채팅방 조회
     @GetMapping("/room")
-    public void getRoom(String roomId, Model model){
+    public ResponseEntity<String> getRoom(String roomId){
 
         log.info("# get Chat Room, roomID : " + roomId);
 
-        model.addAttribute("room", repository.findRoomById(roomId));
+        return ResponseEntity.ok(repository.findRoomById(roomId).toString());
+
     }
 }

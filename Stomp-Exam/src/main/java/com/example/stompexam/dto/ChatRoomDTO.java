@@ -2,6 +2,7 @@ package com.example.stompexam.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.UUID;
  */
 @Getter
 @Setter
+@ToString
 public class ChatRoomDTO {
 
     private String roomId;
